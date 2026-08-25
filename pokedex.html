@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokédex</title>
+    <link rel="stylesheet" href="pixel-theme.css">
+    <link rel="stylesheet" href="components/type-tag.css">
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; padding: 9px 10px 14px; background: var(--px-bg); color: var(--px-text); font-family: var(--px-font-body); font-size: 12px; }
+        .pdx-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+        .pdx-title { font-family: var(--px-font-mono); font-size: 12px; font-weight: 800; color: var(--px-accent); letter-spacing: .5px; }
+        .pdx-count { margin-left: auto; font-family: var(--px-font-mono); font-size: 12px; font-weight: 800; color: var(--px-text-hi); }
+        .pdx-count .pct { color: var(--px-text-dim); font-weight: 700; }
+        .pdx-bar { height: 6px; background: var(--px-bg-cell, #eee); border: 1px solid var(--px-border-panel, #1a1a1a); border-radius: 4px; overflow: hidden; margin-bottom: 8px; }
+        .pdx-bar > i { display: block; height: 100%; background: var(--px-good, #4fa84a); width: 0; }
+        .pdx-tools { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; margin-bottom: 8px; }
+        .pdx-gen { font-family: var(--px-font-mono); font-size: 11px; font-weight: 700; padding: 3px 8px; border: 2px solid var(--px-border-panel, #1a1a1a); border-radius: 6px; background: var(--px-bg-btn, #fff); color: var(--px-text-val, #2b2820); cursor: pointer; }
+        .pdx-gen.active { background: var(--px-accent, #e3350d); color: #fff; }
+        .pdx-miss { margin-left: auto; display: inline-flex; align-items: center; gap: 5px; font-size: 11px; cursor: pointer; user-select: none; }
+        .pdx-list { display: flex; flex-direction: column; border: 2px solid var(--px-border-panel, #1a1a1a); border-radius: 6px; overflow: hidden; }
+        .pdx-row { display: flex; align-items: center; gap: 8px; padding: 4px 8px; border-bottom: 1px solid var(--px-line, #e6e0cf); }
+        .pdx-row:last-child { border-bottom: none; }
+        .pdx-row.caught { background: var(--px-bg-caught, rgba(79,168,74,.12)); }
+        .pdx-row.unknown { opacity: .5; }
+        .pdx-num { font-family: var(--px-font-mono); font-size: 11px; color: var(--px-text-dim); width: 42px; flex: 0 0 auto; }
+        .pdx-nm { font-family: var(--px-font-mono); font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--px-text-hi); flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .pdx-st { font-size: 11px; font-family: var(--px-font-mono); flex: 0 0 auto; }
+        .pdx-st.c { color: var(--px-good, #4fa84a); }
+        .pdx-st.s { color: var(--px-mid, #b8860b); }
+        .pdx-st.u { color: var(--px-text-dim); }
+        .pdx-row { cursor: default; }
+        .pdx-tip { position: fixed; z-index: 99999; max-width: 260px; background: #14161f; color: #eef; border: 2px solid var(--px-accent, #e3350d); border-radius: 8px; padding: 7px 9px; box-shadow: 0 8px 24px rgba(0,0,0,.45); pointer-events: none; font-family: var(--px-font-mono); }
+        .loc-head { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+        .loc-spr { width: 46px; height: 46px; flex: 0 0 auto; image-rendering: pixelated; object-fit: contain; }
+        .loc-spr.sil { filter: brightness(0); }
+        .loc-title { font-size: 11px; font-weight: 800; color: #ffd66b; }
+        .loc-row { display: flex; justify-content: space-between; gap: 10px; font-size: 11px; padding: 2px 0; border-top: 1px solid rgba(255,255,255,.08); }
+        .loc-map { color: #fff; }
+        .loc-meta { color: #9fb0d0; white-space: nowrap; flex: 0 0 auto; }
+        .loc-none { font-size: 11px; color: #9fb0d0; line-height: 1.5; }
+        .loc-more { font-size: 10px; color: #9fb0d0; margin-top: 4px; }
+        .pdx-empty { color: var(--px-text-dim); text-align: center; padding: 20px 0; }
+        .pdx-wait { color: var(--px-text-dim); text-align: center; padding: 24px 10px; line-height: 1.6; }
+    </style>
+</head>
+<body>
+    <div class="pdx-head">
+        <span class="pdx-title">📕 POKÉDEX</span>
+        <span class="pdx-count" id="pdx-count">—</span>
+    </div>
+    <div class="pdx-bar"><i id="pdx-progress"></i></div>
+    <div class="pdx-tools" id="pdx-gens"></div>
+    <div id="pdx-body"></div>
+
+    <script src="data/extension-storage.js"></script>
+    <script src="components/type-tag.js"></script>
+    <script src="components/panel-interaction-forwarder.js"></script>
+    <script src="pokedex.js"></script>
+</body>
+</html>

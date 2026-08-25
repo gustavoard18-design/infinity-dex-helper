@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabela de Tipos</title>
+    <link rel="stylesheet" href="pixel-theme.css">
+    <link rel="stylesheet" href="components/type-tag.css">
+    <link rel="stylesheet" href="components/update-notice.css">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--px-bg);
+            color: var(--px-text);
+            font-family: var(--px-font-body);
+            font-size: 12px;
+            padding: 12px 16px 16px;
+        }
+
+        /* ---- barra de topo ---- */
+        .chart-top {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        .chart-title {
+            font-family: var(--px-font-mono);
+            font-size: 13px;
+            letter-spacing: 1.5px;
+            color: var(--px-text-hi);
+            white-space: nowrap;
+        }
+
+        .chart-caption {
+            font-size: 12px;
+            color: var(--px-text-dim);
+            flex: 1;
+            min-width: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .chart-legend {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            font-family: var(--px-font-mono);
+            font-size: 11px;
+            color: var(--px-text-soft);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .legend-swatch {
+            width: 14px;
+            height: 14px;
+            display: inline-block;
+        }
+
+
+        /* ---- tabela completa interativa ---- */
+        .chart-scroll {
+            overflow-x: auto;
+        }
+
+        table.type-chart {
+            border-collapse: separate;
+            border-spacing: 2px;
+            /* no modo full a tabela ocupa toda a área disponível em vez de
+               encolher pro conteúdo e deixar um vazio à direita */
+            width: 100%;
+        }
+
+        table.type-chart th,
+        table.type-chart td {
+            text-align: center;
+            padding: 4px 5px;
+            font-family: var(--px-font-mono);
+            font-size: 11px;
+            border: 0;
+            transition: opacity .1s;
+        }
+
+        table.type-chart th.corner,
+        table.type-chart th.col-head,
+        table.type-chart th.row-head {
+            position: sticky;
+            background: var(--px-bg);
+        }
+
+        table.type-chart th.corner {
+            top: 0;
+            left: 0;
+            z-index: 3;
+        }
+
+        table.type-chart th.col-head {
+            top: 0;
+            z-index: 2;
+            cursor: pointer;
+        }
+
+        table.type-chart th.row-head {
+            left: 0;
+            z-index: 1;
+            cursor: pointer;
+        }
+
+        .chart-cell.mult-1 {
+            background: var(--px-bg-cell);
+            color: transparent;
+        }
+
+        table.type-chart td.dim,
+        table.type-chart th.dim {
+            opacity: 0.28;
+        }
+
+        table.type-chart td.hl,
+        table.type-chart th.hl {
+            outline: 2px solid var(--px-accent);
+            outline-offset: -2px;
+        }
+
+
+
+
+
+        .hint {
+            color: var(--px-text-dim);
+            font-size: 12px;
+            line-height: 1.5;
+            margin: 10px 0 0;
+        }
+    </style>
+</head>
+
+<body class="px-scroll">
+    <div class="chart-top">
+        <span class="chart-title">TABELA DE TIPOS</span>
+        <span class="chart-caption" id="chart-caption">linha = atacante · coluna = defensor</span>
+        <span class="chart-legend">
+            <span class="legend-item"><span class="legend-swatch mult-2"></span>2×</span>
+            <span class="legend-item"><span class="legend-swatch" style="background:var(--px-bg-cell)"></span>1×</span>
+            <span class="legend-item"><span class="legend-swatch mult-0-5"></span>½×</span>
+            <span class="legend-item"><span class="legend-swatch mult-0"></span>0×</span>
+        </span>
+        <button type="button" class="px-btn px-btn-accent" id="chart-back">◂ VOLTAR</button>
+    </div>
+
+
+    <div class="chart-scroll">
+        <table class="type-chart" id="type-chart"></table>
+    </div>
+    <p class="hint">Linhas = quem ataca. Colunas = quem defende. Toque/clique num tipo pra fixar o destaque; toque de
+        novo pra soltar.</p>
+
+    <script src="data/extension-storage.js"></script>
+    <script src="components/tooltip.js"></script>
+    <script src="components/update-notice.js"></script>
+    <script src="components/pixel-icon.js"></script>
+    <script src="components/type-tag.js"></script>
+    <script src="components/type-chart-data.js"></script>
+    <script src="components/panel-interaction-forwarder.js"></script>
+    <script src="chart.js"></script>
+
+</body>
+
+</html>

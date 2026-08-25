@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Meus Pokémon</title>
+
+    <link
+        rel="stylesheet"
+        href="pixel-theme.css"
+    >
+
+    <link rel="stylesheet" href="components/type-tag.css">
+    <link rel="stylesheet" href="components/nature-effect.css">
+    <link rel="stylesheet" href="components/pokemon-filters.css">
+    <link rel="stylesheet" href="components/update-notice.css">
+
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; padding: 9px 10px 14px; background: var(--px-bg); color: var(--px-text); font-family: var(--px-font-body); font-size: 12px; }
+        .page-container { width: 100%; }
+        .pokemon-results-summary { font-family: var(--px-font-mono); font-size: 11px; font-weight: 700; color: var(--px-accent, #e3350d); margin: 0 0 6px; }
+        .iv-total-field { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; font-size: 12px; }
+        .iv-total-field input { width: 56px; }
+        .pokemon-toolbar { display: grid; gap: 8px; margin-bottom: 8px; }
+        .pokemon-toolbar-main { display: grid; grid-template-columns: minmax(0, 1fr) 44px; gap: 4px; }
+        /* linha com os dois botões de expandir tudo (grupos + fita não faz
+           parte do CSS base do brief — precisa de um wrapper pra ficarem
+           lado a lado, já que .pokemon-toolbar só empilha filhos diretos) */
+        .pokemon-toolbar-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+        .px-btn[aria-pressed="true"] { background: var(--px-accent); border-color: var(--px-accent); color: var(--px-on-dark); }
+
+        .pokemon-group-toggle { display: flex; align-items: center; gap: 7px; width: 100%; border: 0; background: none; color: inherit; font: inherit; padding: 0; cursor: pointer; }
+        .group-title { font-family: var(--px-font-mono); font-size: 10px; color: var(--px-accent); letter-spacing: 1.5px; text-transform: uppercase; }
+        .group-rule { flex: 1; height: 1px; background: var(--px-line); }
+        .group-counter { font-family: var(--px-font-mono); font-size: 10px; color: var(--px-text-dim); }
+        .pokemon-group { margin-bottom: 8px; }
+
+        .pokemon-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); align-items: start; gap: 6px; margin: 6px 0 12px; }
+        .pokemon-card { background: var(--px-bg-card); border: 1px solid var(--px-border-panel); border-radius: var(--px-radius-sm, 4px); border-left: 4px solid var(--card-type-color, var(--px-border-panel)); padding: 6px 8px; display: flex; flex-direction: column; gap: 7px; min-width: 0; }
+        .pokemon-card-toggle { display: flex; align-items: center; gap: 8px; width: 100%; border: 0; background: none; color: inherit; font: inherit; text-align: left; padding: 0; cursor: pointer; }
+        .pokemon-icon { width: 38px; height: 38px; flex: 0 0 auto; background: repeating-linear-gradient(45deg, var(--px-bg-cell) 0 4px, var(--px-bg-track) 4px 8px); box-shadow: inset 0 0 0 2px var(--px-border); object-fit: contain; display: flex; align-items: center; justify-content: center; }
+        .pokemon-id-col { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+        .pokemon-name { font-family: var(--px-font-mono); font-size: 11px; font-weight: 700; color: var(--px-text-hi); display: flex; align-items: baseline; gap: 5px; min-width: 0; }
+        .pokemon-name-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-transform: uppercase; }
+        .pokemon-gender-f { color: var(--px-female); }
+        .pokemon-gender-m { color: var(--px-male); }
+        .pokemon-chips { display: flex; gap: 3px; }
+        .pokemon-right { text-align: right; display: flex; flex-direction: column; gap: 3px; align-items: flex-end; }
+        .pokemon-level { font-size: 12px; color: var(--px-text-val); }
+        .pokemon-ivbar { display: flex; align-items: center; gap: 4px; }
+        .pokemon-ivbar .px-bar { width: 34px; }
+        .pokemon-ivbar-label { font-family: var(--px-font-mono); font-size: 9px; width: 34px; text-align: right; }
+        .pokemon-details { display: flex; flex-direction: column; gap: 6px; padding-top: 6px; border-top: 1px solid var(--px-line); }
+        .detail-row { display: flex; gap: 6px; min-width: 0; align-items: baseline; }
+        .detail-key { font-family: var(--px-font-mono); font-size: 8px; color: var(--px-text-dim); width: 62px; flex: 0 0 auto; text-transform: uppercase; }
+        .detail-val { font-size: 12px; color: var(--px-text-val); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+        /* habilidade injeta o ⓘ padrão (components/tooltip.js) —
+           sem isso o ícone fica cortado pelo ellipsis da linha */
+        .detail-val[data-ability] { overflow: visible; white-space: normal; }
+        .nat-mod { font-family: var(--px-font-mono); font-size: 8px; padding: 2px 4px; background: var(--px-bg-btn2); }
+        /* regras .iv-rating[data-rating] moradas em pixel-theme.css — battle.js
+           também renderiza PokemonIvEvaluation.html(foe) e precisa delas. */
+        .pokemon-iv-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 3px; }
+        .pokemon-iv { display: flex; flex-direction: column; align-items: center; gap: 2px; background: var(--px-bg-btn2); padding: 3px 0; }
+        .pokemon-iv .k { font-family: var(--px-font-mono); font-size: 8px; color: var(--px-text-dim); }
+        .pokemon-iv .v { font-family: var(--px-font-mono); font-size: 10px; }
+        .moves-head { display: flex; align-items: center; gap: 7px; margin-top: 2px; }
+        .moves-head::after { content: ''; flex: 1; height: 1px; background: var(--px-line); }
+        .pokemon-move { display: flex; align-items: center; gap: 7px; background: var(--px-bg-btn2); padding: 4px 6px; }
+        .pokemon-move-type { width: 20px; height: 20px; flex: 0 0 auto; border: 2px solid var(--px-border); border-radius: var(--px-radius-sm, 6px); }
+        .pokemon-move-name { flex: 1; min-width: 0; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .pokemon-move-category { font-family: var(--px-font-mono); font-size: 9px; }
+        .pokemon-move-pp { font-family: var(--px-font-mono); font-size: 9px; color: var(--px-text-dim); width: 44px; text-align: right; }
+        .empty { margin: 0; padding: 16px; border: 1px dashed var(--px-border); text-align: center; color: var(--px-text-dim); }
+        [hidden] { display: none !important; }
+        body.full .pokemon-list { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+    </style>
+</head>
+
+<body>
+    <main class="page-container">
+        <div class="pokemon-toolbar">
+            <div class="pokemon-toolbar-main">
+                <input type="search" class="px-input pokemon-filter" id="pokemon-name-filter" placeholder="Filtrar por nome…" aria-label="Filtrar Pokémon por nome">
+                <button type="button" class="px-btn pokemon-advanced-toggle" id="toggle-advanced-filters" aria-pressed="false" data-tip="Filtros avançados: tipo, nível, IVs, natureza, item, gênero.">▤</button>
+            </div>
+            <div class="pokemon-toolbar-actions">
+                <button type="button" class="px-btn" id="expand-all-groups" aria-pressed="false" data-tip="Expande ou recolhe todos os grupos (Meu Time e Caixas) de uma vez.">GRUPOS ABERTOS</button>
+                <button type="button" class="px-btn" id="expand-all-pokemon" aria-pressed="false" data-tip="Abre os detalhes de todos os Pokémon de uma vez. Cada grupo abre e fecha pelo próprio título.">DETALHES DE TODOS</button>
+            </div>
+            <div class="pokemon-advanced-filters" id="pokemon-advanced-filters" hidden></div>
+        </div>
+
+        <div id="content">
+            <p class="empty">
+                Aguardando os dados dos Pokémon...
+            </p>
+        </div>
+    </main>
+
+    <script src="data/extension-storage.js"></script>
+    <script src="components/tooltip.js"></script>
+    <script src="components/update-notice.js"></script>
+    <script src="components/pixel-icon.js"></script>
+    <script src="components/type-tag.js"></script>
+    <script src="components/nature-effect.js"></script>
+    <script src="components/ability-info.js"></script>
+    <script src="components/iv-evaluation.js"></script>
+    <script src="components/pokemon-filters.js"></script>
+    <script src="data/constants.js"></script>
+    <script src="components/panel-interaction-forwarder.js"></script>
+    <script src="myPokemons.js"></script>
+</body>
+</html>

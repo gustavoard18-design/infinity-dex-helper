@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Encontro atual</title>
+    <link rel="stylesheet" href="pixel-theme.css">
+    <link rel="stylesheet" href="components/nature-effect.css">
+    <link rel="stylesheet" href="components/update-notice.css">
+    <link rel="stylesheet" href="components/type-tag.css">
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; background: var(--px-bg); color: var(--px-text);
+            font-family: var(--px-font-body); font-size: 12px;
+            padding: 9px 10px 14px;
+        }
+        .enc-screen { display: flex; flex-direction: column; gap: 10px; }
+        .enc-head { display: flex; align-items: flex-start; gap: 9px; }
+        .enc-sprite {
+            width: 60px; height: 60px; flex: 0 0 auto;
+            background: repeating-linear-gradient(45deg, var(--px-bg-cell) 0 4px, var(--px-bg-track) 4px 8px);
+            box-shadow: inset 0 0 0 2px var(--px-border);
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--px-font-mono); font-size: 7px; color: var(--px-text-dim);
+        }
+        img.enc-sprite { object-fit: contain; padding: 2px; }
+        .enc-id { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
+        .enc-name-row { display: flex; align-items: baseline; gap: 6px; }
+        .enc-name { font-family: var(--px-font-mono); font-size: 15px; font-weight: 700; color: var(--px-text-hi); letter-spacing: .5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; }
+        .enc-level { font-size: 16px; color: var(--px-text-dim); white-space: nowrap; }
+        .enc-gender-f { color: var(--px-female); font-size: 17px; }
+        .enc-gender-m { color: var(--px-male); font-size: 17px; }
+        .enc-types { display: flex; gap: 4px; }
+        .enc-hp { display: flex; align-items: center; gap: 7px; }
+        .enc-hp-track { flex: 1; height: 10px; background: var(--px-bg-track); box-shadow: inset 0 0 0 2px var(--px-border); position: relative; overflow: hidden; }
+        .enc-hp-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--px-good); }
+        .enc-hp-fill[data-level="mid"] { background: var(--px-mid); }
+        .enc-hp-fill[data-level="low"] { background: var(--px-bad); }
+        .enc-hp-label { font-family: var(--px-font-mono); font-size: 10px; color: var(--px-text-dim); }
+        .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--px-border-panel); border: 1px solid var(--px-border-panel); border-radius: var(--px-radius-sm, 4px); overflow: hidden; }
+        .meta-cell { background: var(--px-bg-card); padding: 5px 7px; display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+        .meta-key { font-family: var(--px-font-mono); font-size: 8px; color: var(--px-text-dim); letter-spacing: .5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .meta-val { font-size: 12px; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--px-text-val); }
+        .section { display: flex; flex-direction: column; gap: 5px; }
+        .section-head { display: flex; align-items: center; gap: 7px; }
+        .section-head .px-label { white-space: nowrap; }
+        .section-head::after { content: ''; flex: 1; height: 1px; background: var(--px-line); }
+        .section-head .head-extra { font-family: var(--px-font-mono); font-size: 10px; }
+        .ivs-grid6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 3px; }
+        .iv-cell { display: flex; flex-direction: column; align-items: center; gap: 3px; background: var(--px-bg-card); padding: 4px 0; }
+        .iv-key { font-family: var(--px-font-mono); font-size: 11px; color: var(--px-text-soft); }
+        .iv-cell .px-bar { width: 78%; }
+        .iv-num { font-family: var(--px-font-mono); font-size: 12px; line-height: 1; }
+        .iv-stat { font-size: 12px; line-height: 1; color: var(--px-text-val); }
+        .best-two { display: flex; flex-direction: column; gap: 5px; padding: 4px 0; }
+        .best-r1 { font-family: var(--px-font-mono); font-size: 12px; font-weight: 700; color: var(--px-accent); text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .best-r2 { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; }
+        .best-r2 .type-tag { max-width: 100%; box-sizing: border-box; }
+        .best-r2 .abbr { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .best-badge { font-family: var(--px-font-mono); font-size: 9px; padding: 2px 5px; border-radius: var(--px-radius-sm, 4px); white-space: nowrap; }
+        .badge-neutral { background: var(--px-bg-badge); color: var(--px-text-val); }
+        .badge-stab { background: var(--px-best-border); color: var(--px-accent); }
+        .badge-ko { background: var(--px-bad); color: var(--px-on-dark); font-weight: 700; }
+        .badge-ko-maybe { background: var(--px-mid); color: var(--px-on-dark); font-weight: 700; }
+        .slot-num { width: 16px; height: 16px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,.35); font-family: var(--px-font-mono); font-size: 9px; }
+        .chip-row { display: flex; flex-wrap: wrap; gap: 3px; }
+        .move-item { background: var(--px-bg-card); border: 2px solid var(--px-border-panel); border-radius: var(--px-radius-sm, 6px); overflow: hidden; display: flex; flex-direction: column; }
+        .move-main { display: flex; align-items: center; gap: 7px; padding: 5px 7px; }
+        .move-type-box { width: 22px; height: 22px; flex: 0 0 auto; border: 2px solid var(--px-border); border-radius: var(--px-radius-sm, 6px); }
+        .move-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+        .move-name { flex: 1 1 auto; min-width: 0; font-size: 12px; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .move-name-row { display: flex; align-items: center; gap: 5px; min-width: 0; }
+        .move-seen { flex: 0 0 auto; font-family: var(--px-font-mono); font-size: 8px; letter-spacing: .5px; color: var(--px-good); border: 1px solid var(--px-good); padding: 1px 4px; }
+        .move-sub { font-size: 11px; line-height: 1.1; }
+        .move-pp.pp-empty { color: var(--px-bad); }
+        .move-mult { font-family: var(--px-font-mono); font-size: 11px; padding: 3px 5px; }
+        .move-expand { width: 22px; height: 20px; flex: 0 0 auto; background: var(--px-bg-track); border: 1px solid var(--px-border-btn); color: var(--px-text-val); font-family: var(--px-font-mono); font-size: 11px; padding: 0; cursor: pointer; }
+        .move-expand.open { background: var(--px-accent); color: var(--px-on-dark); }
+        .move-detail { display: flex; flex-direction: column; gap: 4px; padding: 4px 0 8px 16px; }
+        .foe-row .label { display: inline-flex; align-items: center; gap: 6px; min-width: 0; overflow: hidden; }
+        .foe-dot { width: 10px; height: 10px; flex: 0 0 auto; border-radius: 50%; border: 1px solid var(--px-border); }
+        .move-pp-mine.pp-empty { color: var(--px-bad); }
+        .eff-row { display: flex; align-items: flex-start; gap: 6px; }
+        .eff-mult { width: 34px; flex: 0 0 auto; font-family: var(--px-font-mono); font-size: 11px; padding: 5px 0; text-align: center; }
+        .eff-types { flex: 1; display: flex; flex-wrap: wrap; gap: 3px; }
+        .status-note { font-size: 12px; color: var(--px-text-dim); }
+        .rows { display: flex; flex-direction: column; }
+        .row { display: flex; justify-content: space-between; gap: 10px; padding: 4px 0; border-bottom: 1px solid var(--px-line); }
+        .row:last-child { border-bottom: none; }
+        .row .label { color: var(--px-text-dim); }
+        .row .value { text-align: right; color: var(--px-text-val); display: inline-flex; align-items: center; gap: 8px; justify-content: flex-end; }
+        .row-best .label { color: var(--px-accent); font-weight: 600; }
+        .best-star { color: var(--px-accent); }
+        .move-dmg { font-family: var(--px-font-mono); font-size: 11px; font-weight: 800; font-variant-numeric: tabular-nums; cursor: help; white-space: nowrap; }
+        .move-dmg.dmg-normal { color: var(--px-text-soft); }
+        .move-dmg.dmg-maybe { color: var(--px-mid); }
+        .move-dmg.dmg-ko { color: var(--px-bad); }
+        .move-pp-mine { color: var(--px-text-dim); font-family: var(--px-font-mono); font-size: 11px; font-variant-numeric: tabular-nums; }
+        .pp-warning { font-family: var(--px-font-mono); font-size: 10px; font-weight: 700; padding: 4px 7px; border-radius: var(--px-radius-sm, 4px); cursor: help; }
+        .pp-warning-out { background: var(--px-bad); color: var(--px-on-dark); }
+        .pp-warning-low { background: var(--px-mid); color: var(--px-on-dark); }
+        .ball-rate { color: var(--px-male); }
+        .stage.up { color: var(--px-good); }
+        .stage.down { color: var(--px-bad); }
+        .gotcha { padding: 12px; text-align: center; }
+        .gotcha-badge { display: inline-block; padding: 9px 14px; background: var(--px-good); color: var(--px-on-dark); font-family: var(--px-font-mono); }
+        .empty { color: var(--px-text-dim); }
+    </style>
+</head>
+
+<body>
+    <div id="content">
+        <p class="empty">Nenhum encontro capturado ainda. Entre em uma batalha selvagem.</p>
+    </div>
+    <script src="data/extension-storage.js"></script>
+    <script src="data/constants.js"></script>
+    <script src="components/tooltip.js"></script>
+    <script src="components/update-notice.js"></script>
+    <script src="components/nature-effect.js"></script>
+    <script src="components/ability-info.js"></script>
+    <script src="components/iv-evaluation.js"></script>
+    <script src="components/catch-rate.js"></script>
+    <script src="components/pixel-icon.js"></script>
+    <script src="components/type-tag.js"></script>
+    <script src="components/type-chart-data.js"></script>
+    <script src="data/move-types.js"></script>
+    <script src="data/move-status.js"></script>
+    <script src="data/move-details.js"></script>
+    <script src="components/panel-interaction-forwarder.js"></script>
+    <script src="battle.js"></script>
+</body>
+
+</html>

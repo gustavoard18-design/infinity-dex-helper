@@ -1,0 +1,17 @@
+/* pílula de tipo "Quadro de Tipos": cor sólida, texto negrito, borda de tinta */
+.type-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 9px;
+    border-radius: var(--px-radius-sm, 6px);
+    border: 2px solid var(--px-border, #1a1a1a);
+    font-family: var(--px-font-mono);
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: .3px;
+    line-height: 1;
+    white-space: nowrap;
+}
+.type-tag.mini { padding: 2px 6px; font-size: 9px; border-width: 1.5px; }
+.type-tag .abbr { font-family: var(--px-font-mono); }
+.type-icon-px { display: inline-flex; }

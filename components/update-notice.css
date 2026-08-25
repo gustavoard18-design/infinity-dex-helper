@@ -1,0 +1,17 @@
+.update-notice {
+    max-width: 980px;
+    margin: 0 auto 14px;
+    padding: 9px 12px;
+    border: 2px solid var(--px-accent, #e3350d);
+    border-radius: var(--px-radius-sm, 6px);
+    background: var(--px-bg-card, #ffffff);
+    color: var(--px-accent, #e3350d);
+    font-family: var(--px-font-mono, sans-serif);
+    font-size: var(--pxl-fs-xs, 0.58rem);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    line-height: 1.5;
+    text-align: center;
+    box-sizing: border-box;
+}

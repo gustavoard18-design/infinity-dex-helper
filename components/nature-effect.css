@@ -1,0 +1,20 @@
+.nature-effects {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 4px 8px;
+    margin-left: 8px;
+    font-size: var(--pxl-fs-xs);
+}
+
+.nature-increase {
+    color: var(--px-good);
+}
+
+.nature-decrease {
+    color: var(--px-bad);
+}
+
+.nature-neutral {
+    color: var(--px-text-dim);
+}

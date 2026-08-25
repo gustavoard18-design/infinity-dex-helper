@@ -1,0 +1,295 @@
+.pokemon-advanced-filters {
+    padding: 14px;
+    border: 1px solid var(--px-border-panel);
+    border-radius: var(--px-radius-sm, 4px);
+    background: var(--px-bg-card);
+}
+
+.pokemon-filter-grid,
+.nature-effect-fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+}
+
+.filter-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+}
+
+.filter-field > span,
+.pokemon-filter-section legend {
+    color: var(--px-text-dim);
+    font-family: var(--px-font-mono);
+    font-size: var(--pxl-fs-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.filter-field--checkbox {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 7px;
+    cursor: pointer;
+}
+
+.filter-toggle-control {
+    align-self: end;
+    min-height: 34px;
+    padding: 6px 9px;
+    border: 1px solid var(--px-border);
+    background: var(--px-bg-btn2);
+}
+
+.filter-toggle-control input {
+    position: relative;
+    width: 34px;
+    height: 18px;
+    margin: 0;
+    appearance: none;
+    border: 1px solid var(--px-border);
+    background: var(--px-line);
+}
+
+.filter-toggle-control input::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 10px;
+    height: 10px;
+    background: var(--px-text-dim);
+}
+
+.filter-toggle-control input:checked {
+    background: var(--px-good);
+}
+
+.filter-toggle-control input:checked::after {
+    background: var(--px-good);
+    transform: translateX(16px);
+}
+
+.pokemon-filter-section {
+    min-width: 0;
+    margin: 14px 0 0;
+    padding: 12px 0 0;
+    border: 0;
+    border-top: 1px solid var(--px-border-btn);
+}
+
+.pokemon-filter-section legend {
+    padding-right: 8px;
+}
+
+.filter-checks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 18px;
+}
+
+.type-filter-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.type-filter-option {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    min-width: 0;
+    padding: 4px 6px;
+    border: 1px solid transparent;
+    background: var(--px-bg-btn2);
+    color: var(--px-text);
+    font: inherit;
+    font-size: var(--pxl-fs-xs);
+    cursor: pointer;
+}
+
+.type-filter-option[aria-pressed="true"] {
+    border-color: var(--px-accent);
+    background: var(--px-line);
+}
+
+.type-filter-option span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.filter-help {
+    margin: 7px 0 0;
+    color: var(--px-text-dim);
+    font-size: var(--pxl-fs-xs);
+}
+
+.nature-autocomplete {
+    position: relative;
+    margin-top: 8px;
+}
+
+.nature-autocomplete input {
+    width: 100%;
+}
+
+.nature-dropdown {
+    display: none;
+    position: absolute;
+    z-index: 20;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    max-height: 240px;
+    overflow-y: auto;
+    border: 1px solid var(--px-border);
+    background: var(--px-bg-btn2);
+}
+
+.nature-dropdown.open {
+    display: block;
+}
+
+.nature-dropdown button,
+.nature-dropdown > span {
+    display: flex;
+    width: 100%;
+    padding: 8px;
+    border: 0;
+    border-bottom: 1px solid var(--px-border-btn);
+    background: transparent;
+    color: var(--px-text);
+    font: inherit;
+    text-align: left;
+}
+
+.nature-dropdown button {
+    cursor: pointer;
+}
+
+.nature-dropdown button:hover {
+    background: var(--px-line);
+}
+
+.nature-filter-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.nature-filter-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 7px;
+    border: 1px solid var(--px-border-btn);
+    background: var(--px-bg-btn2);
+}
+
+.nature-filter-chip button {
+    margin-left: 6px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--px-bad);
+    font: inherit;
+    cursor: pointer;
+}
+
+.iv-filter-grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(58px, 1fr));
+    gap: 7px;
+}
+
+.iv-filter-grid label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    color: var(--px-text-dim);
+    font-family: var(--px-font-mono);
+    font-size: var(--pxl-fs-xs);
+}
+
+.iv-filter-grid input {
+    width: 100%;
+    min-width: 0;
+    padding: 6px 8px;
+    border: 1px solid var(--px-border);
+    border-radius: var(--px-radius-sm, 4px);
+    background: var(--px-bg-card);
+    color: var(--px-text);
+    font-family: var(--px-font-body);
+    font: inherit;
+}
+
+.pokemon-filter-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+/* -----------------------------------------------------------------------
+   pokemon-filters.js continua usando as classes v1 (.pxl-input/.pxl-btn)
+   pra inputs/selects e pros botões Limpar/Aplicar — como o componente é
+   compartilhado e não pode ser editado aqui, a rescala pro visual flat
+   (borda 1px, cantos arredondados) é feita via override escopado a este
+   painel, sem mexer em pokemon-filters.js.
+----------------------------------------------------------------------- */
+.pokemon-advanced-filters .pxl-input {
+    font-family: var(--px-font-body);
+    border: 1px solid var(--px-border);
+    border-radius: var(--px-radius-sm, 4px);
+    background: var(--px-bg-card);
+    color: var(--px-text);
+    box-shadow: none;
+    padding: 6px 8px;
+    font-size: 12px;
+}
+
+.pokemon-advanced-filters .pxl-input::placeholder {
+    color: var(--px-text-dim);
+}
+
+.pokemon-advanced-filters .pxl-input:focus {
+    outline: none;
+    border-color: var(--px-accent);
+    box-shadow: none;
+}
+
+.pokemon-advanced-filters .pxl-btn {
+    font-family: var(--px-font-mono);
+    text-transform: none;
+    letter-spacing: normal;
+    font-size: 11px;
+    line-height: 1.5;
+    border: 1px solid var(--px-border-btn);
+    border-radius: var(--px-radius-sm, 4px);
+    background: var(--px-bg-btn2);
+    color: var(--px-text-dim);
+    box-shadow: none;
+    padding: 5px 10px;
+    image-rendering: auto;
+}
+
+.pokemon-advanced-filters .pxl-btn:hover:not(:disabled) {
+    filter: none;
+    border-color: var(--px-accent);
+    color: var(--px-text);
+}
+
+.pokemon-advanced-filters .pxl-btn:active:not(:disabled) {
+    transform: none;
+    box-shadow: none;
+}
+
+@media (max-width: 520px) {
+    .iv-filter-grid {
+        grid-template-columns: repeat(3, minmax(58px, 1fr));
+    }
+}

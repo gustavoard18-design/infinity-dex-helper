@@ -1,0 +1,261 @@
+/* ---------------------------------------------------------------------
+   Design system v4 "Quadro de Tipos": papel claro, contorno de tinta
+   grosso, cor por tipo elemental, tipografia bem pesada — a linguagem
+   visual da tabela de efetividade e das insígnias de ginásio do jogo.
+   Fonte: pilha de fontes do sistema (sem fonte pixelada customizada).
+--------------------------------------------------------------------- */
+:root {
+    --px-bg-bar: #f2efe4;
+    --px-bg: #faf7ef;
+    --px-bg-card: #ffffff;
+    --px-bg-btn: #ffffff;
+    --px-bg-cell: #f4f1e4;
+    --px-bg-btn2: #ffffff;
+    --px-bg-track: #e9e4d2;
+    --px-bg-badge: #f0ecdd;
+    --px-line: #ddd6bf;
+    --px-border: #1a1a1a;
+    --px-border-btn: #1a1a1a;
+    --px-border-tip: #1a1a1a;
+    /* borda de tinta grossa dos painéis principais (overlay, cards, caixas
+       de golpe/status) — a mesma linha preta das insígnias/tabela de tipos */
+    --px-border-panel: #1a1a1a;
+    --px-text-hi: #101010;
+    --px-text: #1a1a1a;
+    --px-text-val: #2b2820;
+    --px-text-soft: #55503f;
+    --px-text-dim: #7a7460;
+    --px-on-dark: #ffffff;
+    --px-accent: #e3350d;
+    --px-accent-hover: #ff5a33;
+    --px-good: #4fa84a;
+    --px-bad: #d62839;
+    --px-female: #ee6f9e;
+    --px-male: #4a90d9;
+    --px-mid: #f0c419;
+    --px-best-border: #1a1a1a;
+    --px-font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --px-font-mono: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --px-radius-sm: 6px;
+    --px-radius: 8px;
+    --px-radius-lg: 10px;
+}
+
+.px-label {
+    font-family: var(--px-font-mono);
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--px-text-dim);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+.px-rule { display: flex; align-items: center; gap: 7px; }
+.px-rule::after { content: ''; flex: 1; height: 1px; background: var(--px-line); }
+
+.px-btn {
+    font-family: var(--px-font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    background: var(--px-bg-btn2);
+    border: 2px solid var(--px-border-btn);
+    color: var(--px-text-val);
+    border-radius: var(--px-radius-sm);
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color .12s ease, color .12s ease;
+}
+.px-btn:hover:not(:disabled) { background: var(--px-bg-cell); }
+.px-btn.active { background: var(--px-accent); border-color: var(--px-border-btn); color: var(--px-on-dark); }
+.px-btn.px-btn-accent { color: var(--px-accent); }
+.px-btn:disabled, .px-btn[aria-disabled="true"] { opacity: .4; cursor: not-allowed; }
+
+.px-toggle {
+    width: 38px; height: 21px;
+    border: 2px solid var(--px-border);
+    background: var(--px-bg-track);
+    border-radius: 11px;
+    padding: 0; display: flex; align-items: center; justify-content: flex-start;
+    cursor: pointer;
+    transition: background-color .15s ease;
+}
+.px-toggle::after {
+    content: '';
+    width: 13px; height: 13px;
+    margin: 0 2px;
+    border-radius: 50%;
+    background: var(--px-text-dim);
+    transition: transform .15s ease, background-color .15s ease;
+}
+.px-toggle[aria-checked="true"] { background: var(--px-good); justify-content: flex-end; }
+.px-toggle[aria-checked="true"]::after { background: #ffffff; }
+
+.px-bar { display: block; height: 5px; background: var(--px-bg-track); }
+/* span inline ignora width/height — sem display block o preenchimento não renderiza */
+.px-bar-fill { display: block; height: 100%; }
+
+/* grade da avaliação de IVs (PokemonIvEvaluation.html) — usada tanto em
+   myPokemons.html (card do Pokémon) quanto em battle.js (avaliação do
+   oponente); cores mapeadas pros tokens px-* que batem com a paleta antiga */
+.iv-rating[data-rating="ruim"] { color: var(--px-bad); }
+.iv-rating[data-rating="medio"] { color: var(--px-mid); }
+.iv-rating[data-rating="bom"] { color: var(--px-good); }
+.iv-rating[data-rating="muito-bom"] { color: var(--px-male); }
+.iv-rating[data-rating="excelente"] { color: var(--t-fairy); }
+
+.px-input {
+    background: var(--px-bg-card);
+    border: 2px solid var(--px-border);
+    color: var(--px-text);
+    font-family: var(--px-font-body);
+    font-size: 14px;
+    padding: 6px 9px;
+    border-radius: var(--px-radius-sm);
+    outline: none;
+    transition: border-color .12s ease;
+}
+.px-input:focus { border-color: var(--px-accent); }
+
+.mult-4 { background: #4fa84a; color: #ffffff; border-radius: var(--px-radius-sm); font-weight: 800; }
+.mult-2 { background: #7fc97a; color: #101010; border-radius: var(--px-radius-sm); font-weight: 800; }
+.mult-1 { background: var(--px-bg-badge); color: var(--px-text-dim); border-radius: var(--px-radius-sm); font-weight: 800; }
+.mult-0-5 { background: #f0a8a8; color: #5a1010; border-radius: var(--px-radius-sm); font-weight: 800; }
+.mult-0-25 { background: #e3350d; color: #ffffff; border-radius: var(--px-radius-sm); font-weight: 800; }
+.mult-0 { background: #1a1a1a; color: #ffffff; border-radius: var(--px-radius-sm); font-weight: 800; }
+
+@keyframes px-blip { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+.px-blip { width: 6px; height: 6px; border-radius: 50%; background: var(--px-good); animation: px-blip 1.6s steps(2, end) infinite; }
+
+.px-scroll::-webkit-scrollbar { width: 7px; height: 7px; }
+.px-scroll::-webkit-scrollbar-track { background: var(--px-bg); }
+.px-scroll::-webkit-scrollbar-thumb { background: var(--px-line); border-radius: 4px; }
+
+
+/* ---------------------------------------------------------------------
+   Classes "pxl-" (nome legado) — ainda em uso por componentes que não
+   foram migrados pro naming v3/px-*: .pxl-btn/.pxl-btn-sm/.pxl-input
+   (components/pokemon-filters.js, via overrides escopados em
+   pokemon-filters.css), .pxl-bubble (content.js) e .pxl-pokeball
+   (myPokemons.js). Usam os mesmos tokens px-* do resto do app.
+--------------------------------------------------------------------- */
+
+/* ---------------------------------------------------------------------
+   Escala de tamanhos de texto — única fonte de verdade pra todo o app
+   (index.html, battle.html, overlay do content.js), pra evitar valores
+   soltos e inconsistentes entre telas.
+--------------------------------------------------------------------- */
+:root {
+    --pxl-fs-2xs: 0.5rem;   /* números densos de tabela, notas aninhadas */
+    --pxl-fs-xs: 0.58rem;   /* legendas/rótulos em caixa alta (h2 de painel, headers) */
+    --pxl-fs-base: 0.7rem;  /* controles interativos (botões, inputs) */
+
+    /* cores de tipo — usadas pelo componente de tag/pill (components/type-tag.js) */
+    --t-normal: #9a9a80;
+    --t-fire: #f0803c;
+    --t-water: #4a90e2;
+    --t-electric: #f5cd35;
+    --t-grass: #63bb5b;
+    --t-ice: #7fd6d6;
+    --t-fighting: #d3425f;
+    --t-poison: #b763cf;
+    --t-ground: #d9a642;
+    --t-flying: #8f7fe0;
+    --t-psychic: #f56a8a;
+    --t-bug: #92bc2c;
+    --t-rock: #c9b787;
+    --t-ghost: #7b62a3;
+    --t-dragon: #5f6fe8;
+    --t-dark: #6f6880;
+    --t-steel: #8fa5b8;
+    --t-fairy: #ee90c0;
+}
+
+/* ---- buttons ---- */
+.pxl-btn {
+    font-family: var(--px-font-mono);
+    letter-spacing: 0.01em;
+    font-size: var(--pxl-fs-base);
+    font-weight: 700;
+    line-height: 1.5;
+    border: 2px solid var(--px-border-btn);
+    border-radius: var(--px-radius-sm);
+    background: var(--px-bg-btn2);
+    color: var(--px-text-val);
+    box-shadow: none;
+    padding: 8px 13px;
+    cursor: pointer;
+    transition: background-color .12s ease, border-color .12s ease, filter .12s ease;
+}
+
+.pxl-btn:hover:not(:disabled) {
+    filter: brightness(1.12);
+}
+
+.pxl-btn:active:not(:disabled) {
+    filter: brightness(0.95);
+}
+
+.pxl-btn:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+    filter: none;
+}
+
+.pxl-btn-sm {
+    padding: 6px 9px;
+    font-size: var(--pxl-fs-2xs);
+    border-width: 2px;
+}
+
+/* ---- round bubble ---- */
+.pxl-bubble {
+    width: 100%;
+    height: 100%;
+    border: 2px solid var(--px-border);
+    border-radius: 50%;
+    background: var(--px-accent);
+    color: var(--px-on-dark);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    box-shadow: 0 3px 0 0 rgba(0,0,0,.2);
+    transition: filter .12s ease;
+}
+.pxl-bubble:hover { filter: brightness(1.08); }
+
+/* ---- text/number inputs ---- */
+.pxl-input {
+    font-family: var(--px-font-mono);
+    border: 2px solid var(--px-border);
+    border-radius: var(--px-radius-sm);
+    background: var(--px-bg-card);
+    color: var(--px-text);
+    box-shadow: none;
+    padding: 7px 9px;
+    font-size: var(--pxl-fs-base);
+}
+
+.pxl-input::placeholder {
+    color: var(--px-text-dim);
+}
+
+.pxl-input:focus {
+    outline: none;
+    border-color: var(--px-accent);
+    box-shadow: 0 0 0 3px rgba(227,53,13,.18);
+}
+
+/* ---- pokeball bullet, usable as a decorative marker/spinner ---- */
+.pxl-pokeball {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at center, #fff 0 2px, #000 2px 3px, transparent 3px),
+        linear-gradient(#ee1515 0 48%, #000 48% 52%, #fff 52% 100%);
+    border: 1.5px solid #000;
+    vertical-align: middle;
+    flex: 0 0 auto;
+}
