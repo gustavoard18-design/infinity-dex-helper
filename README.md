@@ -4,6 +4,8 @@ Extensão de navegador **não-oficial** (companion) para o jogo [InfinityMMO](ht
 
 > ⚠️ **Ferramenta feita por fã, não-oficial.** Não é afiliada, endossada ou mantida pela equipe do InfinityMMO nem por nenhum detentor de marca. Use por sua conta.
 
+> 🙏 **Créditos / origem:** este projeto foi **baseado no** [pokemon-infinity-mmo-extension, de andaraGui](https://github.com/andaraGui/pokemon-infinity-mmo-extension). A base do código veio desse projeto; a partir dele foram feitas modificações e adições (aba Pokédex, filtros, fórmulas do jogo, etc.). Todos os créditos pelo trabalho original ao **andaraGui**.
+
 ## ✨ O que faz
 
 - **Batalha ao vivo**: fraquezas do oponente, **melhor jogada**, **dano estimado** e **chance de captura** (usando as mesmas fórmulas do jogo)
@@ -36,4 +38,4 @@ A extensão é **gratuita**. Se ela te ajuda, considere uma doação — nas **�
 
 ## 📄 Licença de uso
 
-Projeto pessoal/fã. O código é aberto para transparência. Marcas e conteúdos do jogo pertencem aos seus respectivos donos.
+Projeto pessoal/fã, **derivado** do trabalho original de [andaraGui](https://github.com/andaraGui/pokemon-infinity-mmo-extension). Os créditos da base do código são dele. Marcas e conteúdos do jogo pertencem aos seus respectivos donos.
